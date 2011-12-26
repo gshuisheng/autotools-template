@@ -1,0 +1,27 @@
+// INSTALL
+//
+// Copyright © 2011, Gregory ROMÉ.
+// All rights reserved.
+//
+// This is an AsciiDoc v8 document.
+//
+// To generate the HTML:
+// $ asciidoc -a iconsdir=/usr/share/asciidoc/icons -a data-uri \
+//   -a icons -a toc README
+//
+= INSTALL
+Grégory Romé <gregory.rome@gmail.com>
+v1.0
+
+Copyright (C) 2011, Gregory ROMÉ.
+All rights reserved.
+
+This document is intended to describe how to install the package.
+
+== Autoreconf
+
+For generating the autotools files:
+
+-----------------------------------------
+autoreconf --install
+-----------------------------------------

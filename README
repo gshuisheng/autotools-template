@@ -1,0 +1,19 @@
+// README
+//
+// Copyright © 2011, Gregory ROMÉ.
+// All rights reserved.
+//
+// This is an AsciiDoc v8 document.
+//
+// To generate the HTML:
+// $ asciidoc -a iconsdir=/usr/share/asciidoc/icons -a data-uri \
+//   -a icons -a toc README
+//
+= README
+Grégory Romé <gregory.rome@gmail.com>
+v1.0
+
+Copyright (C) 2011, Gregory ROMÉ.
+All rights reserved.
+
+Please read the file INSTALL for installation instructions.
