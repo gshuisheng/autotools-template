@@ -11,3 +11,5 @@
 /config.h.in
 /configure
 *~
+/build/
+m4
