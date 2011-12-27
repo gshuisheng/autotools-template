@@ -89,6 +89,8 @@ then
 	LDFLAGS="$LDFLAGS -lgcov"
 fi
 
+AM_CONDITIONAL(ENABLE_INDIVIDUAL_TEST, test "X$enable_individual_test" = "Xtrue")
+
 # ==============================================================================
 # 4. checks for programs
 AC_PATH_PROG(git_cmd, git)
@@ -153,7 +155,17 @@ fi
 
 # ==============================================================================
 # 5.  checks for libraries
-AC_CHECK_LIB([cunit], [CU_initialize_registry]) # libcunit for testing
+AC_CHECK_LIB([cunit], [CU_initialize_registry], AS_VAR_SET(have_cunit,true), 
+	AC_MSG_WARN([*** WARNING: cunit is required for testing \
+	(sudo apt-get install libcunit1-dev) ***]))
+
+if test "X$have_cunit" = "Xtrue"; then
+	MAYBE_TEST=test
+	AC_MSG_NOTICE([*** INFO: Test will be generated])
+else
+	MAYBE_TEST=
+fi
+AC_SUBST([MAYBE_TEST])
 
 # ==============================================================================
 # 6.  checks for header files
@@ -172,7 +184,8 @@ AC_PROG_LIBTOOL
 # 11. checks for system services
 # ==============================================================================
 # 12. AC_CONFIG_FILES([file...])
-AC_CONFIG_FILES(Makefile src/Makefile src/hello/Makefile src/version/Makefile)
+AC_CONFIG_FILES(Makefile src/Makefile src/hello/Makefile src/version/Makefile
+	test/Makefile test/hello/Makefile test/version/Makefile)
 
 # ==============================================================================
 AC_OUTPUT

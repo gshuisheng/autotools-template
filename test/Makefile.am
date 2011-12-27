@@ -29,8 +29,15 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-bin_PROGRAMS     = test
-test_SOURCES = main.c
+SUBDIRS = hello version
 
-test_LDADD   = ../libhello/libhello.la
-test_CFLAGS  = -I$(top_srcdir)/libhello/include
+noinst_LTLIBRARIES = libtest.la
+libtest_la_SOURCES =
+libtest_la_LIBADD  = hello/libhello_test.la version/libversion_test.la
+
+bin_PROGRAMS = test
+test_SOURCES = main.c
+test_CFLAGS  = 
+test_LDFLAGS = -lcunit
+test_LDADD   = libtest.la 
+

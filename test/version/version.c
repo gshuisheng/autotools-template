@@ -1,5 +1,5 @@
 /*
- * main.c --
+ * version.c --
  *
  *       ╔════════════════════════════════╗
  *       ║ This file uses UTF-8 encoding. ║
@@ -32,24 +32,49 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * -----------------------------------------------------------------------------
  */
-
+ 
 #include <stdio.h>
 #include <string.h>
 #include "CUnit/Basic.h"
 
-int main()
-{
-   CU_pSuite pSuite = NULL;
-   /* initialize the CUnit test registry */
-   if (CUE_SUCCESS != CU_initialize_registry())
-      return CU_get_error();
+#include "version.h"
 
-	verstion_test_register(pSuite);
-	hello_test_register(pSuite);
-   /* Run all tests using the CUnit Basic interface */
-   CU_basic_set_mode(CU_BRM_VERBOSE);
-   CU_basic_run_tests();
-   CU_cleanup_registry();
-   return CU_get_error();
+int version_test_init_suite(void)
+{
+	return 0;
 }
 
+int version_test_clean_suite(void)
+{
+	return 0;
+}
+
+
+void version_test_get_version(void)
+{
+	version_get_version();
+	CU_ASSERT(0 == 0);
+}
+
+void version_test_get_revision(void)
+{
+	version_get_revision();
+	CU_ASSERT(0 == 0);
+}
+
+int verstion_test_register(CU_pSuite pSuite)
+{
+   /* add a suite to the registry */
+   pSuite = CU_add_suite("Suite_version", version_test_init_suite, version_test_clean_suite);
+   if (NULL == pSuite) {
+      CU_cleanup_registry();
+      return CU_get_error();
+   }
+
+   if ((NULL == CU_add_test(pSuite, "version::get_version", version_test_get_version)) ||
+       (NULL == CU_add_test(pSuite, "version::get_revision", version_test_get_revision)))
+   {
+      CU_cleanup_registry();
+      return CU_get_error();
+   }
+}

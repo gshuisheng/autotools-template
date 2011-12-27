@@ -45,7 +45,6 @@ int main()
       return CU_get_error();
 
 	verstion_test_register(pSuite);
-	hello_test_register(pSuite);
    /* Run all tests using the CUnit Basic interface */
    CU_basic_set_mode(CU_BRM_VERBOSE);
    CU_basic_run_tests();

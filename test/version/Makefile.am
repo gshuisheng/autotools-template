@@ -29,14 +29,16 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-SUBDIRS = hello version
+noinst_LTLIBRARIES         = libversion_test.la
+libversion_test_la_SOURCES = version.c
+libversion_test_la_CFLAGS  = -I$(top_builddir)/src/version
+libversion_test_la_LIBADD  = $(top_builddir)/src/version/libversion.la
 
-noinst_LTLIBRARIES = libtop.la
-libtop_la_SOURCES  =
-libtop_la_LIBADD   = hello/libhello.la version/libversion.la
-
-bin_PROGRAMS     = template
-template_SOURCES = main.c
-template_CFLAGS  = -Ihello -Iversion
-template_LDADD   = libtop.la
+if ENABLE_INDIVIDUAL_TEST
+bin_PROGRAMS         = version_test
+version_test_SOURCES = main.c
+version_test_CFLAGS  = 
+version_test_LDFLAGS = -lcunit
+version_test_LDADD   = libversion_test.la
+endif
 
