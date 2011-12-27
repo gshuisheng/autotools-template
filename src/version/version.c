@@ -1,5 +1,5 @@
 /*
- * hello.c --
+ * version_.c --
  *
  *       ╔════════════════════════════════╗
  *       ║ This file uses UTF-8 encoding. ║
@@ -43,7 +43,17 @@
 #include "config.h"
 #endif
 
-const char *hello_get_msg() {
-	return "Hello world\n";
+#if HAVE_VCS_REVISION_H
+#include "vcs_revision.h"
+#else
+#define PACKAGE_VCS_REVISION ""
+#endif
+
+const char *version_get_version() {
+	return PACKAGE_VERSION;
+}
+
+const char *version_get_revision() {
+	return PACKAGE_VCS_REVISION;
 }
 

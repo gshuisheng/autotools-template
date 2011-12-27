@@ -43,13 +43,15 @@
 #include "config.h"
 #endif
 
-#include "libhello.h"
+#include "hello.h"
+#include "version.h"
 
 int main(int argc, char *argv[]) {
 
-		printf("libhello version %s [%s]\n", get_version(), get_revision());
+		printf("%s version %s [%s]\n", argv[0], version_get_version(), 
+			version_get_revision());
 
-		say_hello();
+		printf("%s", hello_get_msg());
 
         return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * hello.c --
+ * version_.h --
  *
  *       ╔════════════════════════════════╗
  *       ║ This file uses UTF-8 encoding. ║
@@ -32,18 +32,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * -----------------------------------------------------------------------------
  */
+#ifndef _LIBHELLO_H_
+#define _LIBHELLO_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <err.h>
-#include <errno.h>
+const char *version_get_version();
 
-#if HAVE_CONFIG_H
-#include "config.h"
+const char *version_get_revision();
+
 #endif
-
-const char *hello_get_msg() {
-	return "Hello world\n";
-}
 

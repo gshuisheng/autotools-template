@@ -29,15 +29,18 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+noinst_LTLIBRARIES = libversion.la
+libversion_la_SOURCES = version.c version.h
 
-SUBDIRS = hello version
+if HAVE_VCS
+version.c: vcs_revision.h
 
-noinst_LTLIBRARIES = libtop.la
-libtop_la_SOURCES  =
-libtop_la_LIBADD   = hello/libhello.la version/libversion.la
+vcs_revision.h:
+	echo -n '#define PACKAGE_VCS_REVISION "' > $@ ;\
+		echo -n `@vcs_revision@` >> $@ ;\
+		echo '"' >> $@
 
-bin_PROGRAMS     = template
-template_SOURCES = main.c
-template_CFLAGS  = -Ihello -Iversion
-template_LDADD   = libtop.la
+clean-local:
+	rm -f -- vcs_revision.h
+endif
 

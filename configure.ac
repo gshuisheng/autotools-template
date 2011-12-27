@@ -52,8 +52,8 @@ AC_PREREQ(2.59)
 
 # ==============================================================================
 # 2. AC_INIT(package, version, bug-report-address)
-define([version], [1.0.0]) # For sharing the version number
-AC_INIT([template], [version], [gregory.rome@gmail.com])
+define([VERSION_NUMBER], [1.0]) # For sharing the version number
+AC_INIT([template], [VERSION_NUMBER], [gregory.rome@gmail.com])
 
 # ==============================================================================
 # 3. information on the package
@@ -119,8 +119,7 @@ then
 	have_svn_revision=true
 fi
 
-AM_CONDITIONAL(HAVE_GIT_WC, test "X$have_git_revision" = "Xtrue")
-AM_CONDITIONAL(HAVE_SVN_WC, test "X$have_svn_revision" = "Xtrue")
+AM_CONDITIONAL(HAVE_VCS, test "X$have_svn_revision" = "Xtrue" || test "X$have_git_revision" = "Xtrue")
 
 # ---------------------------
 # Define command vcs_revision
@@ -173,7 +172,7 @@ AC_PROG_LIBTOOL
 # 11. checks for system services
 # ==============================================================================
 # 12. AC_CONFIG_FILES([file...])
-AC_CONFIG_FILES(Makefile src/Makefile)
+AC_CONFIG_FILES(Makefile src/Makefile src/hello/Makefile src/version/Makefile)
 
 # ==============================================================================
 AC_OUTPUT

@@ -31,21 +31,14 @@
 
 SUBDIRS = src
 
-if HAVE_GIT_WC
+if HAVE_VCS
 
-EXTRA_DIST = GIT_REVISION
+EXTRA_DIST = @VCS_FILE@
 
 @VCS_FILE@: FORCE
-	@vcs_revision@ > @VCS_FILE@
-endif
+	@vcs_revision@ > $@
 
-if HAVE_SVN_WC
-
-EXTRA_DIST = SVN_REVISION
-
-SVN_REVISION: FORCE
-	@vcs_revision@ > SVN_REVISION
-endif
+endif # if HAVE_VCS
 
 FORCE:
 

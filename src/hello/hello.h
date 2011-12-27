@@ -35,11 +35,7 @@
 #ifndef _LIBHELLO_H_
 #define _LIBHELLO_H_
 
-void say_hello();
-
-const char *get_version();
-
-const char *get_revision();
+const char * hello_get_msg();
 
 #endif
 
