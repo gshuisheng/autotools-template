@@ -31,3 +31,13 @@
 
 SUBDIRS = libhello src
 
+if HAVE_GIT_WC
+
+EXTRA_DIST = GIT_REVISION
+
+GIT_REVISION: FORCE
+	@git_revision@ > GIT_REVISION
+endif
+
+FORCE:
+

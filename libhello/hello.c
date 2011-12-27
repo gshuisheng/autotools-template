@@ -43,7 +43,21 @@
 #include "config.h"
 #endif
 
+#if HAVE_VCS_REVISION_H
+#include "vcs_revision.h"
+#else
+#define PACKAGE_VCS_REVISION ""
+#endif
+
 void say_hello() {
 	printf("Hello !\n");
+}
+
+const char *get_version() {
+	return PACKAGE_VERSION;
+}
+
+const char *get_revision() {
+	return PACKAGE_VCS_REVISION;
 }
 

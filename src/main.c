@@ -47,6 +47,8 @@
 
 int main(int argc, char *argv[]) {
 
+		printf("libhello version %s [%s]\n", get_version(), get_revision());
+
 		say_hello();
 
         return 0;

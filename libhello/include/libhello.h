@@ -37,5 +37,9 @@
 
 void say_hello();
 
+const char *get_version();
+
+const char *get_revision();
+
 #endif
 

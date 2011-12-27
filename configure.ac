@@ -31,7 +31,9 @@
 
 AC_PREREQ(2.59)
 
-AC_INIT([template], [1.0])
+define([version], [1.0.0])
+
+AC_INIT([template], [version])
 
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
@@ -47,11 +49,34 @@ AC_PROG_LIBTOOL
 AC_PROG_CC
 
 # ------------------------------------------------------------------------------
+# Manage Revision Number
+#
+AC_PATH_PROG(git_cmd, git)
 
-	
+GIT_REVISION=`cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'`
+
+if test "X$git_cmd" = "X" || 
+	test "X$GIT_REVISION" = "X"
+then
+	git_revision="cat $(pwd)/$srcdir/GIT_REVISION"
+else
+	git_revision="cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'"
+fi
+
+AM_CONDITIONAL(HAVE_GIT_WC, \
+	test "X$GIT_REVISION" != "X" || test -f $srcdir/GIT_REVISION)
+
+AC_SUBST(git_revision)
+
+if test "X$GIT_REVISION" != "X" || test -f $srcdir/GIT_REVISION
+then
+	AC_DEFINE_UNQUOTED(HAVE_VCS_REVISION_H, 1, [Have vcs_revision.h])
+fi
+
+# ------------------------------------------------------------------------------	
 # libhello configuration
 AC_SUBST([LIBHELLO_LT_VERSION], [0:0:0])
-AC_SUBST([LIBHELLO_LT_RELEASE], [1.0.0])
+AC_SUBST([LIBHELLO_LT_RELEASE], [version])
 
 AC_OUTPUT
 

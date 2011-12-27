@@ -35,3 +35,15 @@ libhello_la_LDFLAGS = -version-info @LIBHELLO_LT_VERSION@ -release @LIBHELLO_LT_
 
 include_HEADERS = include/libhello.h
 
+if HAVE_GIT_WC
+hello.c: vcs_revision.h
+
+vcs_revision.h:
+	echo -n '#define PACKAGE_VCS_REVISION "' > $@ ;\
+		echo -n `@git_revision@` >> $@ ;\
+		echo '"' >> $@
+
+clean-local:
+	rm -f -- vcs_revision.h
+endif
+
