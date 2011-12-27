@@ -48,9 +48,18 @@ LT_INIT()
 AC_PROG_LIBTOOL
 AC_PROG_CC
 
+
+# ------------------------------------------------------------------------------
+# Check available libraries
+#
+# 
+# Check that libcunit is available; define HAVE_LIBCUNIT
+AC_CHECK_LIB([cunit], [CU_initialize_registry])
+
 # ------------------------------------------------------------------------------
 # Manage Revision Number
 #
+# Git
 AC_PATH_PROG(git_cmd, git)
 
 GIT_REVISION=`cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'`
