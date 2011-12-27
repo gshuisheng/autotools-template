@@ -32,5 +32,4 @@
 bin_PROGRAMS     = template
 template_SOURCES = main.c
 
-template_LDADD   = ../libhello/libhello.la
-template_CFLAGS  = -I$(top_srcdir)/libhello/include
+

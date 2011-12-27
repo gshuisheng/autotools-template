@@ -29,31 +29,48 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# ==============================================================================
+# Autoconf Layout
+#
+# 1.  Autoconf requirements
+# 2.  AC_INIT(package, version, bug-report-address)
+# 3.  information on the package
+# 4.  checks for programs
+# 5.  checks for libraries
+# 6.  checks for header files
+# 7.  checks for types
+# 8.  checks for structures
+# 9.  checks for compiler characteristics
+# 10. checks for library functions
+# 11. checks for system services
+# 12. AC_CONFIG_FILES([file...])
+# 13. AC_OUTPUT
+
+# ==============================================================================
+# 1. Autoconf requirements
 AC_PREREQ(2.59)
 
-define([version], [1.0.0])
+# ==============================================================================
+# 2. AC_INIT(package, version, bug-report-address)
+define([version], [1.0.0]) # For sharing the version number
+AC_INIT([template], [version], [gregory.rome@gmail.com])
 
-AC_INIT([template], [version])
-
+# ==============================================================================
+# 3. information on the package
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES(Makefile src/Makefile libhello/Makefile)
 
 AC_CANONICAL_SYSTEM
-# 'foreign'; it's not a pure GNU project
-AM_INIT_AUTOMAKE([foreign])
-LT_INIT()
 
-AC_PROG_LIBTOOL
-AC_PROG_CC
+AM_INIT_AUTOMAKE([foreign]) # 'foreign' => not a pure GNU project
+LT_INIT
 
 # ------------------------------------------------------------------------------
 # Options
-#
+
 # Enable debug
 # Debug options are defined in Makefile.am
-#
 AC_ARG_WITH([debug], [AS_HELP_STRING([--with-debug],
 	[Enable debug (default is no)])], [enable_debug=$withval],
 	[enable_debug=no])
@@ -72,43 +89,92 @@ then
 	LDFLAGS="$LDFLAGS -lgcov"
 fi
 
-# ------------------------------------------------------------------------------
-# Check available libraries
-#
-# 
-# Check that libcunit is available; define HAVE_LIBCUNIT
-AC_CHECK_LIB([cunit], [CU_initialize_registry])
-
-# ------------------------------------------------------------------------------
-# Manage Revision Number
-#
-# Git
+# ==============================================================================
+# 4. checks for programs
 AC_PATH_PROG(git_cmd, git)
+AC_PATH_PROG(svnversion_cmd, svnversion)
 
-GIT_REVISION=`cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'`
+have_git_revision=false
+have_svn_revision=false
 
-if test "X$git_cmd" = "X" || 
-	test "X$GIT_REVISION" = "X"
+# --------------------------
+# Have svn or git revision ?
+if test "X$git_cmd" != "X"
 then
-	git_revision="cat $(pwd)/$srcdir/GIT_REVISION"
-else
-	git_revision="cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'"
+	GIT_REVISION=`cd $(pwd)/$srcdir && $git_cmd describe --all --dirty 2>/dev/null| tr -d '\n'`
 fi
 
-AM_CONDITIONAL(HAVE_GIT_WC, \
-	test "X$GIT_REVISION" != "X" || test -f $srcdir/GIT_REVISION)
-
-AC_SUBST(git_revision)
-
 if test "X$GIT_REVISION" != "X" || test -f $srcdir/GIT_REVISION
+then
+	have_git_revision=true
+else
+	if test "X$svnversion_cmd" != "X"
+	then
+		SVN_REVISION=`svnversion $(pwd)/$srcdir`
+	fi
+fi
+
+if test "X$SVN_REVISION" != "Xexported" || test -f $srcdir/SVN_REVISION
+then
+	have_svn_revision=true
+fi
+
+AM_CONDITIONAL(HAVE_GIT_WC, test "X$have_git_revision" = "Xtrue")
+AM_CONDITIONAL(HAVE_SVN_WC, test "X$have_svn_revision" = "Xtrue")
+
+# ---------------------------
+# Define command vcs_revision
+if test "X$have_git_revision" = "Xtrue"
+then
+	if test "X$GIT_REVISION" = "X"
+	then
+		vcs_revision="cat $(pwd)/$srcdir/GIT_REVISION"
+	else
+		vcs_revision="cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'"
+	fi
+	VCS_FILE=GIT_REVISION
+elif test "X$have_svn_revision" = "Xtrue"
+then
+	if test "X$SVN_REVISION" = "X"
+	then
+		vcs_revision="cat $(pwd)/$srcdir/SVN_REVISION"
+	else
+		vcs_revision="svnversion $(pwd)/$srcdir"
+	fi
+	VCS_FILE=SVN_REVISION
+fi
+
+AC_SUBST(vcs_revision)
+AC_SUBST(VCS_FILE)
+
+if test "X$have_git_revision" = "Xtrue" || "X$have_svn_revision" = "Xtrue"
 then
 	AC_DEFINE_UNQUOTED(HAVE_VCS_REVISION_H, 1, [Have vcs_revision.h])
 fi
 
-# ------------------------------------------------------------------------------	
-# libhello configuration
-AC_SUBST([LIBHELLO_LT_VERSION], [0:0:0])
-AC_SUBST([LIBHELLO_LT_RELEASE], [version])
+# ==============================================================================
+# 5.  checks for libraries
+AC_CHECK_LIB([cunit], [CU_initialize_registry]) # libcunit for testing
 
+# ==============================================================================
+# 6.  checks for header files
+# ==============================================================================
+# 7.  checks for types
+# ==============================================================================
+# 8.  checks for structures
+# ==============================================================================
+# 9.  checks for compiler characteristics
+AC_PROG_CC
+AC_PROG_LIBTOOL
+
+# ==============================================================================
+# 10. checks for library functions
+# ==============================================================================
+# 11. checks for system services
+# ==============================================================================
+# 12. AC_CONFIG_FILES([file...])
+AC_CONFIG_FILES(Makefile src/Makefile)
+
+# ==============================================================================
 AC_OUTPUT
 
