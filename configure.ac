@@ -48,6 +48,29 @@ LT_INIT()
 AC_PROG_LIBTOOL
 AC_PROG_CC
 
+# ------------------------------------------------------------------------------
+# Options
+#
+# Enable debug
+# Debug options are defined in Makefile.am
+#
+AC_ARG_WITH([debug], [AS_HELP_STRING([--with-debug],
+	[Enable debug (default is no)])], [enable_debug=$withval],
+	[enable_debug=no])
+	
+AM_CONDITIONAL(ENABLE_DEBUG, test "X$enable_debug" = "Xyes")
+
+# Enable coverage
+AC_ARG_WITH([coverage], [AS_HELP_STRING([--with-coverage],
+	[Enable coverage (default is no)])], [enable_coverage=$withval],
+	[enable_coverage=no])
+
+AM_CONDITIONAL(ENABLE_COVERAGE, test "X$enable_coverage" = "Xyes")
+if test "X$enable_coverage" = "Xyes"
+then
+	CFLAGS="$CFLAGS --coverage"
+	LDFLAGS="$LDFLAGS -lgcov"
+fi
 
 # ------------------------------------------------------------------------------
 # Check available libraries
