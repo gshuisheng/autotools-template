@@ -31,7 +31,9 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-OPTS=
+SrcDir=$(dirname $0)
+
+OPTS=$1
 
 # Extra configuration files
 if [ -d config ]
@@ -45,7 +47,7 @@ then
 	OPTS="$OPTS -I m4"
 fi
 
-autoreconf --force --install $OPTS
+autoreconf --force --install $OPTS $SrcDir || exit 1
 
 exit $?
 
