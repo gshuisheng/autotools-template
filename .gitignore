@@ -24,3 +24,7 @@ libtool
 *.tar*
 *.zip
 *.lo
+*.gcno
+*.gcda
+app.info
+coverage_report
