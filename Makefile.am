@@ -31,6 +31,31 @@
 
 SUBDIRS = src $(MAYBE_TEST)
 
+TESTS = test/test
+
+if ENABLE_COVERAGE_REPORT
+
+.PHONY: view-coverage-report
+view-coverage-report: coverage_report/index.html
+	$(BROWSER) $< 2>/dev/null &
+
+.PHONY: coverage
+coverage: coverage_report/index.html
+
+coverage_report/index.html: app.info
+	genhtml -o $(@D) $<
+
+app.info: test/test-main.gcno
+	lcov --directory ./ --capture --output-file $@
+
+test/test-main.gcno: check
+
+clean-local:
+	rm -rf -- app.info coverage_report
+	find . -name *.gcda -exec rm -f \{\} \;
+	find . -name *.gcno -exec rm -f \{\} \;
+
+endif # if ENABLE_COVERAGE_REPORT
 
 if HAVE_VCS
 

@@ -93,6 +93,18 @@ AM_CONDITIONAL(ENABLE_INDIVIDUAL_TEST, test "X$enable_individual_test" = "Xtrue"
 
 # ==============================================================================
 # 4. checks for programs
+AC_PATH_PROG(lcov_cmd, lcov)
+AC_PATH_PROG(genhtml_cmd, genhtml)
+
+if test X"$lcov_cmd" = "X"
+then
+	AC_MSG_WARN([*** WARNING: you should install lcov \
+		(sudo apt-get install lcov)])
+fi
+AM_CONDITIONAL(ENABLE_COVERAGE_REPORT, test X"$lcov_cmd" != "X" \
+	&& test X"$genhtml_cmd" != "X" && test "X$enable_coverage" = "Xyes")
+
+
 AC_PATH_PROG(git_cmd, git)
 AC_PATH_PROG(svnversion_cmd, svnversion)
 
