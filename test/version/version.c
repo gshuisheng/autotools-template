@@ -62,7 +62,7 @@ void version_test_get_revision(void)
 	CU_ASSERT(0 == 0);
 }
 
-int verstion_test_register(CU_pSuite pSuite)
+int version_test_register(CU_pSuite pSuite)
 {
    /* add a suite to the registry */
    pSuite = CU_add_suite("Suite_version", version_test_init_suite, version_test_clean_suite);

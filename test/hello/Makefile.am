@@ -31,7 +31,7 @@
 
 noinst_LTLIBRARIES       = libhello_test.la
 libhello_test_la_SOURCES =  hello.c
-libhello_test_la_CFLAGS  = -I$(top_builddir)/src/hello
+libhello_test_la_CFLAGS  = -I$(top_srcdir)/src/hello
 libhello_test_la_LIBADD  = $(top_builddir)/src/hello/libhello.la
 
 if ENABLE_INDIVIDUAL_TEST

@@ -31,7 +31,7 @@
 
 noinst_LTLIBRARIES         = libversion_test.la
 libversion_test_la_SOURCES = version.c
-libversion_test_la_CFLAGS  = -I$(top_builddir)/src/version
+libversion_test_la_CFLAGS  = -I$(top_srcdir)/src/version
 libversion_test_la_LIBADD  = $(top_builddir)/src/version/libversion.la
 
 if ENABLE_INDIVIDUAL_TEST

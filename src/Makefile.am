@@ -37,6 +37,6 @@ libtop_la_LIBADD   = hello/libhello.la version/libversion.la
 
 bin_PROGRAMS     = template
 template_SOURCES = main.c
-template_CFLAGS  = -Ihello -Iversion
+template_CFLAGS  = -I$(srcdir)/hello -I$(srcdir)/version
 template_LDADD   = libtop.la
 
