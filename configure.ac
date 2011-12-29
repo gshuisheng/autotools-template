@@ -115,7 +115,7 @@ have_svn_revision=false
 # Have svn or git revision ?
 if test "X$git_cmd" != "X"
 then
-	GIT_REVISION=`cd $(pwd)/$srcdir && $git_cmd describe --all --dirty 2>/dev/null| tr -d '\n'`
+	GIT_REVISION=`cd $srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'`
 fi
 
 if test "X$GIT_REVISION" != "X" || test -f $srcdir/GIT_REVISION
@@ -124,7 +124,7 @@ then
 else
 	if test "X$svnversion_cmd" != "X"
 	then
-		SVN_REVISION=`svnversion $(pwd)/$srcdir`
+		SVN_REVISION=`svnversion $srcdir`
 	fi
 fi
 
@@ -141,18 +141,18 @@ if test "X$have_git_revision" = "Xtrue"
 then
 	if test "X$GIT_REVISION" = "X"
 	then
-		vcs_revision="cat $(pwd)/$srcdir/GIT_REVISION"
+		vcs_revision="cat GIT_REVISION"
 	else
-		vcs_revision="cd $(pwd)/$srcdir && git describe --all --dirty 2>/dev/null| tr -d '\n'"
+		vcs_revision="git describe --all --dirty 2>/dev/null| tr -d '\n'"
 	fi
 	VCS_FILE=GIT_REVISION
 elif test "X$have_svn_revision" = "Xtrue"
 then
 	if test "X$SVN_REVISION" = "X"
 	then
-		vcs_revision="cat $(pwd)/$srcdir/SVN_REVISION"
+		vcs_revision="cat SVN_REVISION"
 	else
-		vcs_revision="svnversion $(pwd)/$srcdir"
+		vcs_revision="svnversion"
 	fi
 	VCS_FILE=SVN_REVISION
 fi

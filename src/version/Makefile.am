@@ -35,12 +35,13 @@ libversion_la_SOURCES = version.c version.h
 if HAVE_VCS
 version.c: vcs_revision.h
 
-vcs_revision.h:
+vcs_revision.h: FORCE
 	echo -n '#define PACKAGE_VCS_REVISION "' > $@ ;\
-		echo -n `@vcs_revision@` >> $@ ;\
+		echo -n `cd $(top_srcdir) && @vcs_revision@` >> $@ ;\
 		echo '"' >> $@
 
 clean-local:
 	rm -f -- vcs_revision.h
 endif
 
+FORCE:
